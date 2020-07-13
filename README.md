@@ -8,5 +8,6 @@ An authenticated API for the OCF.
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+pre-commit install
 python -m uvicorn app.main:app --reload
 ```
