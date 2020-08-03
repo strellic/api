@@ -1,5 +1,5 @@
 DOCKER_REVISION ?= testing-$(USER)
-DOCKER_TAG = docker-push.ocf.berkeley.edu/ocfstatic:$(DOCKER_REVISION)
+DOCKER_TAG = docker-push.ocf.berkeley.edu/ocfapi:$(DOCKER_REVISION)
 
 .PHONY: cook-image
 cook-image:
