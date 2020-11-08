@@ -7,10 +7,11 @@ from fastapi.middleware.cors import CORSMiddleware
 # Keycloak setup
 from keycloak import KeycloakOpenID
 
+keycloak_url = "https://auth.ocf.berkeley.edu/auth/"
+realm_name = "ocf"
+
 keycloak_openid = KeycloakOpenID(
-    server_url="https://auth.ocf.berkeley.edu/auth/",
-    client_id="ocfapi",
-    realm_name="ocf",
+    server_url=keycloak_url, client_id="ocfapi", realm_name=realm_name,
 )
 
 app = FastAPI()
@@ -28,9 +29,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# These URLs aren't completely necessary, but they let people authenticate from
-# the /docs to test endpoints. Not sure how to get this working with Keycloak yet
-oauth2_scheme = OAuth2AuthorizationCodeBearer(authorizationUrl="", tokenUrl="")
+oauth2_scheme = OAuth2AuthorizationCodeBearer(
+    authorizationUrl=f"{keycloak_url}realms/{realm_name}/protocol/openid-connect/auth",
+    tokenUrl=f"{keycloak_url}realms/{realm_name}/protocol/openid-connect/token",
+)
 
 
 async def get_current_user(token: str = Depends(oauth2_scheme)):
