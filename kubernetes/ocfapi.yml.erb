@@ -32,10 +32,6 @@ spec:
           - name: MAX_WORKERS
             value: "4"
           image: "docker.ocf.berkeley.edu/ocfapi:<%= version%>"
-          resources:
-            limits:
-              memory: 256Mi
-              cpu: 500m
           ports:
             - containerPort: 80
 ---
