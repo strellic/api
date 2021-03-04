@@ -4,6 +4,8 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2AuthorizationCodeBearer
 from fastapi.middleware.cors import CORSMiddleware
 
+from .routers import hours, lab
+
 # Keycloak setup
 from keycloak import KeycloakOpenID
 
@@ -11,7 +13,9 @@ keycloak_url = "https://auth.ocf.berkeley.edu/auth/"
 realm_name = "ocf"
 
 keycloak_openid = KeycloakOpenID(
-    server_url=keycloak_url, client_id="ocfapi", realm_name=realm_name,
+    server_url=keycloak_url,
+    client_id="ocfapi",
+    realm_name=realm_name,
 )
 
 app = FastAPI()
@@ -28,6 +32,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(hours.router, prefix="/hours")
+app.include_router(lab.router, prefix="/lab")
 
 oauth2_scheme = OAuth2AuthorizationCodeBearer(
     authorizationUrl=f"{keycloak_url}realms/{realm_name}/protocol/openid-connect/auth",
